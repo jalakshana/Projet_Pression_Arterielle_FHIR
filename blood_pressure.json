@@ -1,0 +1,60 @@
+{
+  "resourceType": "Observation",
+  "id": "a6c8b192-3271-4107-ac4e-6200c23570a4",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "vital-signs",
+          "display": "Vital Signs"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "85354-9",
+        "display": "Blood pressure panel"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/patient-123"
+  },
+  "component": [
+    {
+      "code": {
+        "coding": [
+          {
+            "code": "8480-6",
+            "display": "Systolic Blood Pressure"
+          }
+        ]
+      },
+      "valueQuantity": {
+        "value": 120.0,
+        "unit": "mmHg",
+        "system": "http://unitsofmeasure.org"
+      }
+    },
+    {
+      "code": {
+        "coding": [
+          {
+            "code": "8462-4",
+            "display": "Diastolic Blood Pressure"
+          }
+        ]
+      },
+      "valueQuantity": {
+        "value": 80.0,
+        "unit": "mmHg",
+        "system": "http://unitsofmeasure.org"
+      }
+    }
+  ]
+}

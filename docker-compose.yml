@@ -1,0 +1,54 @@
+version: '3.8'
+
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: blood_pressure_fhir-zookeeper-1
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok,stat,conf,isro,mntr"
+    volumes:
+      - ./zookeeper.properties:/etc/kafka/zookeeper.properties
+
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: blood_pressure_fhir-kafka-1
+    ports:
+      - "9092:9092"
+      - "9093:9093"  # Ajout du port pour la connexion depuis l’hôte local
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: blood_pressure_fhir-zookeeper-1:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://blood_pressure_fhir-kafka-1:9092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+    container_name: blood_pressure_fhir-elasticsearch-1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false  # 🔴 Désactive HTTPS et l'authentification
+    ports:
+      - "9200:9200"
+
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.9.0
+    container_name: blood_pressure_fhir-kibana-1
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://blood_pressure_fhir-elasticsearch-1:9200
+
+

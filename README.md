@@ -49,8 +49,7 @@ python producer.py
 python consumer.py
 ```
 6️⃣ **Accéder au Tableau de Bord Kibana**
-Ouvrir un navigateur et aller à :
-🔗 http://localhost:5601
+Ouvrir un navigateur et aller à : http://localhost:5601
 
 ## Fonctionnement du Système
 
